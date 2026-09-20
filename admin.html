@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Cocoa Luxury</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .wrap { width: min(1000px, 100% - 2rem); margin-inline: auto; }
+  .login { min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem; }
+  .login-box { width: min(420px, 100%); border: 1px solid var(--line); background: var(--paper-2); padding: 2rem 1.6rem; }
+  .login-logo { height: 59px; width: auto; margin: 0 auto 1.4rem; }
+  .login-box { text-align: left; }
+  .login-box h1 { font-size: 2.2rem; margin-bottom: 0.4rem; }
+  .login-box > p { margin-bottom: 1.6rem; }
+  .login-box .msg { margin-bottom: 0.8rem; }
+  .pw-row { display: flex; gap: 0.5rem; }
+  .pw-row input { flex: 1; min-width: 0; }
+  .login-links { display: flex; justify-content: space-between; margin-top: 1rem; }
+
+  .bar { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line-gold); }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 62px; }
+  .brand-admin { display: flex; align-items: center; gap: 0.9rem; }
+  .brand-admin img { height: 36px; width: auto; }
+  .who { font-size: 0.88rem; color: var(--muted); margin-right: 0.8rem; }
+  @media (max-width: 600px) { .who { display: none; } }
+  .tabs { display: flex; gap: 0.5rem; padding: 1.4rem 0 1rem; overflow-x: auto; }
+  .tab { flex: none; min-height: 44px; padding: 0.4rem 1.3rem; border: 1px solid var(--line); background: none; border-radius: 999px; color: var(--muted); }
+  .tab[aria-selected='true'] { background: var(--cocoa); border-color: var(--cocoa); color: var(--on-fill); }
+  .head-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin: 0.6rem 0 1rem; }
+  .head-row h2 { font-size: 2rem; }
+  .tools { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1rem; }
+  .tools .ctl { flex: 1; min-width: 160px; width: auto; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1.6rem; }
+  @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { border: 1px solid var(--line); background: var(--paper-2); padding: 1rem 1.1rem; }
+  .stat p { color: var(--muted); font-size: 0.9rem; }
+  .stat strong { display: block; margin-top: 0.3rem; font-family: var(--display); font-size: 2.2rem; font-weight: 600; color: var(--cocoa); }
+  .panel { border: 1px solid var(--line); padding: 1.1rem 1.2rem; margin-bottom: 1.2rem; }
+  .panel h3 { font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .panel ul { margin: 0; padding-left: 1.1rem; }
+  .panel li { margin: 0.3rem 0; }
+
+  .prow { display: grid; grid-template-columns: 64px 1fr; gap: 0.9rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .prow img, .prow .ph { width: 64px; height: 80px; object-fit: cover; background: var(--paper-3); border: 1px solid var(--line); }
+  .prow h3 { font-size: 1.35rem; font-weight: 600; }
+  .prow .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pill { display: inline-block; padding: 0.05rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.8rem; color: var(--muted); margin-left: 0.4rem; }
+  .pill.live { color: var(--ok); border-color: rgba(70, 118, 75, 0.5); }
+  .pill.warn { color: var(--danger); border-color: rgba(163, 57, 42, 0.5); }
+  @media (min-width: 720px) {
+    .prow { grid-template-columns: 64px 1fr auto; align-items: center; }
+    .prow .actions { grid-column: auto; }
+  }
+
+  .ocard { border: 1px solid var(--line); background: var(--paper-2); padding: 1.1rem 1.2rem; margin-bottom: 1rem; display: grid; gap: 0.6rem; }
+  .ohead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem; align-items: center; }
+  .ohead h3 { font-size: 1.4rem; font-weight: 600; }
+  .ocard ul { margin: 0; padding-left: 1.1rem; }
+  .ocard select { min-height: 42px; padding: 0.3rem 0.6rem; background: var(--paper-3); border: 1px solid var(--line); border-radius: 2px; }
+  .otot { font-family: var(--display); font-size: 1.6rem; font-weight: 600; color: var(--cocoa); }
+  .pay-note { font-size: 0.9rem; color: var(--muted); }
+  .empty { padding: 2rem 0; color: var(--muted); }
+
+  dialog.form { width: min(560px, 96vw); max-height: 94dvh; }
+  dialog.form form { padding: 1.5rem; }
+  dialog.form h2 { font-size: 2rem; margin-bottom: 1.2rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.9rem; }
+  .imgs { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 0.6rem; }
+  .imgs .img { width: 96px; }
+  .imgs img { width: 96px; height: 120px; object-fit: cover; border: 1px solid var(--line); }
+  .imgs .img.cover img { border-color: var(--cocoa); }
+  .imgs .badge { font-size: 0.8rem; color: var(--cocoa); }
+  .imgs .link { display: block; }
+  .form-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 0.6rem; }
+  .hint { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<section id="login" class="login" hidden>
+  <div class="login-box">
+    <img class="login-logo" src="logo.png" data-logo alt="Cocoa Luxury" width="168" height="59">
+    <h1>Admin login</h1>
+    <p class="muted">Sign in to manage products, orders and offers.</p>
+    <form id="loginForm">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-row">
+          <input class="ctl" id="password" type="password" autocomplete="current-password" required>
+          <button class="btn btn-sm" id="showPw" type="button" aria-pressed="false">Show</button>
+        </div>
+      </div>
+      <p class="msg" id="loginMsg" role="alert"></p>
+      <button class="btn btn-fill" id="loginBtn" type="submit" style="width:100%">Sign in</button>
+    </form>
+    <div class="login-links"><button class="link" id="forgot" type="button">Forgot password?</button></div>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="bar">
+    <div class="wrap">
+      <div class="brand-admin"><img src="logo.png" data-logo alt="Cocoa Luxury" width="102" height="36"><span class="muted">Admin</span></div>
+      <div><span class="who" id="who"></span><a class="btn btn-sm" href="index.html" target="_blank" rel="noopener" style="margin-right:.5rem">View shop</a><button class="btn btn-sm" id="logout" type="button">Sign out</button></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="dash" aria-selected="true">Overview</button>
+      <button class="tab" role="tab" data-tab="products" aria-selected="false">Products</button>
+      <button class="tab" role="tab" data-tab="orders" aria-selected="false">Orders</button>
+      <button class="tab" role="tab" data-tab="coupons" aria-selected="false">Discount codes</button>
+      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Store settings</button>
+    </div>
+
+    <section id="tab-dash"><div id="dash"></div></section>
+
+    <section id="tab-products" hidden>
+      <div class="head-row"><h2>Products</h2><button class="btn btn-fill" id="addBtn" type="button">Add product</button></div>
+      <div class="tools"><input class="ctl" id="pSearch" type="search" placeholder="Search products" aria-label="Search products"></div>
+      <div id="plist"></div>
+    </section>
+
+    <section id="tab-orders" hidden>
+      <div class="head-row"><h2>Orders</h2><div><button class="btn btn-sm" id="exportOrders" type="button">Download CSV</button> <button class="btn btn-sm" id="refreshOrders" type="button">Refresh</button></div></div>
+      <div class="tools">
+        <input class="ctl" id="oSearch" type="search" placeholder="Search name, phone or order number" aria-label="Search orders">
+        <select class="ctl" id="oStatus" aria-label="Filter by status"></select>
+      </div>
+      <div id="olist"></div>
+    </section>
+
+    <section id="tab-coupons" hidden>
+      <div class="head-row"><h2>Discount codes</h2><button class="btn btn-fill" id="addCoupon" type="button">Add code</button></div>
+      <div id="clist"></div>
+    </section>
+
+    <section id="tab-settings" hidden>
+      <div class="head-row"><h2>Store settings</h2></div>
+      <form id="sform" style="max-width:640px">
+        <div class="panel">
+          <h3>Contact details</h3>
+          <p class="hint">Shown in the Contact section of the shop and used for the WhatsApp buttons.</p>
+          <div class="field"><label for="sWa">WhatsApp number (with country code)</label><input id="sWa" type="tel" inputmode="tel" maxlength="20" placeholder="917439658947"></div>
+          <div class="two">
+            <div class="field"><label for="sP1">Phone number 1</label><input id="sP1" type="tel" inputmode="tel" maxlength="20"></div>
+            <div class="field"><label for="sP2">Phone number 2</label><input id="sP2" type="tel" inputmode="tel" maxlength="20"></div>
+          </div>
+          <div class="field"><label for="sMail">Email</label><input id="sMail" type="email" maxlength="80"></div>
+          <div class="field"><label for="sHours">Opening hours</label><input id="sHours" maxlength="80" placeholder="Monday to Saturday, 12 pm to 8 pm"></div>
+        </div>
+        <div class="field"><label for="sAnn">Announcement bar (shown at the top of the shop, leave empty to hide)</label><input id="sAnn" maxlength="140" placeholder="Free delivery on orders above ₹1999"></div>
+        <div class="two">
+          <div class="field"><label for="sFee">Delivery fee</label><input id="sFee" type="number" min="0" step="1" inputmode="decimal" placeholder="0"></div>
+          <div class="field"><label for="sFree">Free delivery above (optional)</label><input id="sFree" type="number" min="0" step="1" inputmode="decimal"></div>
+        </div>
+        <div class="field"><label for="sShip">Delivery information</label><textarea id="sShip" maxlength="800"></textarea></div>
+        <div class="field"><label for="sRet">Returns and exchange information</label><textarea id="sRet" maxlength="800"></textarea></div>
+        <div class="field"><label for="sSize">Size guide text</label><textarea id="sSize" maxlength="800"></textarea></div>
+        <p class="msg" id="sMsg" role="alert"></p>
+        <button class="btn btn-fill" id="sBtn" type="submit">Save settings</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<dialog id="formDlg" class="form" aria-label="Product form">
+  <form id="pform">
+    <h2 id="formTitle">Add product</h2>
+    <div class="field"><label for="pName">Product name</label><input id="pName" required maxlength="120"></div>
+    <div class="two">
+      <div class="field"><label for="pCat">Category</label><input id="pCat" list="catList" required maxlength="40" placeholder="T-shirt"><datalist id="catList"></datalist></div>
+      <div class="field"><label for="pPrice">Selling price</label><input id="pPrice" type="number" min="0" step="1" inputmode="decimal" required></div>
+    </div>
+    <div class="field"><label for="pWas">Original price (optional, shown crossed out for a sale)</label><input id="pWas" type="number" min="0" step="1" inputmode="decimal"></div>
+    <div class="two">
+      <div class="field"><label for="pSizes">Sizes (comma separated)</label><input id="pSizes" placeholder="S, M, L, XL" maxlength="80"></div>
+      <div class="field"><label for="pStock">Stock (empty = unlimited)</label><input id="pStock" type="number" min="0" step="1" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label for="pDesc">Description</label><textarea id="pDesc" maxlength="1200"></textarea></div>
+    <div class="field">
+      <span class="lbl">Photos (the first photo is the cover)</span>
+      <div class="imgs" id="imgList"></div>
+      <input id="fileIn" type="file" accept="image/*" multiple>
+    </div>
+    <label class="check"><input id="pActive" type="checkbox" checked> Show this product in the shop</label>
+    <p class="msg" id="formMsg" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn" type="button" id="cancelForm">Cancel</button>
+      <button class="btn btn-fill" type="submit" id="saveBtn">Save product</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="couponDlg" class="form" aria-label="Discount code form">
+  <form id="cform">
+    <h2 id="cTitle">Add discount code</h2>
+    <div class="field"><label for="kCode">Code (letters and numbers)</label><input id="kCode" required maxlength="30" autocapitalize="characters" placeholder="WELCOME10"></div>
+    <div class="two">
+      <div class="field"><label for="kKind">Type</label><select class="ctl" id="kKind"><option value="percent">Percent off</option><option value="flat">Fixed amount off</option></select></div>
+      <div class="field"><label for="kVal">Value</label><input id="kVal" type="number" min="1" step="1" inputmode="decimal" required></div>
+    </div>
+    <div class="two">
+      <div class="field"><label for="kMin">Minimum order (optional)</label><input id="kMin" type="number" min="0" step="1" inputmode="decimal"></div>
+      <div class="field"><label for="kExp">Expires on (optional)</label><input id="kExp" type="date"></div>
+    </div>
+    <label class="check"><input id="kActive" type="checkbox" checked> Code is active</label>
+    <p class="msg" id="cMsg" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn" type="button" id="cancelCoupon">Cancel</button>
+      <button class="btn btn-fill" type="submit" id="cBtn">Save code</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="pwDlg" class="form" aria-label="Set a new password">
+  <form id="pwForm">
+    <h2>Set a new password</h2>
+    <div class="field"><label for="newPw">New password (at least 8 characters)</label><input id="newPw" type="password" minlength="8" autocomplete="new-password" required></div>
+    <p class="msg" id="pwMsg" role="alert"></p>
+    <div class="form-actions"><button class="btn btn-fill" type="submit">Save password</button></div>
+  </form>
+</dialog>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

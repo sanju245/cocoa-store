@@ -1,0 +1,93 @@
+/* Cocoa Luxury: cream paper and cocoa brown from the logo, light coffee sections and gold accents. */
+:root {
+  --paper: #ede5da;        /* page: exactly the logo's paper colour */
+  --paper-2: #f6f0e7;      /* raised surfaces: dialogs, drawer */
+  --paper-3: #e3d8c9;      /* image placeholders */
+  --latte: #dccbb2;        /* light coffee: alternate sections */
+  --coffee: #33200f;       /* deep coffee: footer, announcement bar */
+  --ink: #34200f;          /* body text */
+  --muted: #6d5a48;        /* secondary text on cream */
+  --muted-strong: #574535; /* secondary text on light coffee */
+  --cocoa: #6a4325;        /* the logo brown: links, prices, accents */
+  --fill: #4a2d1a;         /* solid buttons */
+  --fill-hover: #33200f;
+  --on-fill: #f6efe4;
+  --gold: #b8934c;         /* gold: rules, borders, highlights */
+  --gold-light: #dcbb75;   /* gold on dark coffee */
+  --gold-deep: #8a6a2b;    /* gold for larger text on cream */
+  --on-gold: #2a1a0e;
+  --line-gold: rgba(184, 147, 76, 0.55);
+  --line: rgba(74, 45, 26, 0.16);
+  --line-strong: rgba(74, 45, 26, 0.42);
+  --field: #8f7a66;        /* input borders (readable contrast) */
+  --danger: #a3392a;
+  --ok: #46764b;
+  --display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --body: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 1rem/1.6 var(--body); -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--cocoa); color: var(--on-fill); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 500; line-height: 1.1; letter-spacing: 0.005em; margin: 0; }
+p { margin: 0; }
+img { max-width: 100%; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--cocoa); }
+:focus-visible { outline: 2px solid var(--cocoa); outline-offset: 3px; }
+.muted { color: var(--muted); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 48px; padding: 0.65rem 1.7rem;
+  border: 1px solid var(--cocoa); background: transparent; color: var(--cocoa);
+  font-weight: 500; letter-spacing: 0.04em; text-decoration: none; border-radius: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn:hover { background: var(--fill); border-color: var(--fill); color: var(--on-fill); }
+.btn-fill { background: var(--fill); border-color: var(--gold); color: var(--on-fill); }
+.btn-fill:hover { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.btn-danger { color: var(--danger); border-color: rgba(163, 57, 42, 0.5); }
+.btn-danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.btn-sm { min-height: 40px; padding: 0.35rem 1.1rem; font-size: 0.92rem; }
+
+.link {
+  background: none; border: 0; padding: 0.35rem 0; color: var(--muted);
+  text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; font-size: 0.93rem;
+}
+.link:hover { color: var(--cocoa); }
+
+.field { display: grid; gap: 0.35rem; margin-bottom: 1.1rem; }
+.field > label, .field > .lbl { font-size: 0.92rem; color: var(--muted); }
+.field input:not([type='checkbox']):not([type='file']), .field select, .field textarea, .ctl {
+  width: 100%; min-height: 48px; padding: 0.65rem 0.85rem;
+  background: var(--paper-2); border: 1px solid var(--field); border-radius: 0;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus, .ctl:focus { border-color: var(--cocoa); outline: 2px solid var(--cocoa); outline-offset: 0; }
+.field input[type='file'] { padding: 0.5rem 0; }
+.check { display: flex; align-items: center; gap: 0.6rem; min-height: 44px; }
+.check input { width: 20px; height: 20px; accent-color: var(--cocoa); }
+
+.msg { min-height: 1.4em; font-size: 0.92rem; color: var(--danger); }
+.msg.ok { color: var(--ok); }
+
+dialog {
+  padding: 0; max-width: none;
+  border: 1px solid var(--line-gold); background: var(--paper-2); color: var(--ink);
+}
+dialog::backdrop { background: rgba(38, 22, 10, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+.rule { display: block; width: 84px; height: 2px; margin: 1.1rem auto; background: linear-gradient(90deg, transparent, var(--gold), transparent); }

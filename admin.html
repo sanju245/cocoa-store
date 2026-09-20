@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Cocoa Luxury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .wrap { width: min(980px, 100% - 2rem); margin-inline: auto; }
+  .login { min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem; }
+  .login-box { width: min(400px, 100%); border: 1px solid var(--line); background: var(--surface); padding: 2rem 1.6rem; }
+  .login-box h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+  .login-box > p { margin-bottom: 1.6rem; }
+
+  .bar { position: sticky; top: 0; z-index: 10; background: rgba(21, 15, 11, 0.95); border-bottom: 1px solid var(--line); }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 62px; }
+  .bar h1 { font-size: 1.3rem; color: var(--gold-hi); }
+  .who { font-size: 0.88rem; color: var(--muted); margin-right: 0.8rem; }
+  .tabs { display: flex; gap: 0.5rem; padding: 1.4rem 0 1rem; }
+  .tab { min-height: 44px; padding: 0.4rem 1.3rem; border: 1px solid var(--line); background: none; border-radius: 999px; color: var(--muted); }
+  .tab[aria-selected='true'] { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0.6rem 0 1rem; }
+  .head-row h2 { font-size: 1.6rem; }
+
+  .prow { display: grid; grid-template-columns: 64px 1fr; gap: 0.9rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .prow img, .prow .ph { width: 64px; height: 80px; object-fit: cover; background: var(--surface-2); border: 1px solid var(--line); }
+  .prow h3 { font-size: 1.1rem; }
+  .prow .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pill { display: inline-block; padding: 0.05rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.8rem; color: var(--muted); margin-left: 0.4rem; }
+  .pill.live { color: var(--ok); border-color: rgba(140, 194, 150, 0.5); }
+  @media (min-width: 720px) {
+    .prow { grid-template-columns: 64px 1fr auto; align-items: center; }
+    .prow .actions { grid-column: auto; }
+  }
+
+  .ocard { border: 1px solid var(--line); background: var(--surface); padding: 1.1rem 1.2rem; margin-bottom: 1rem; display: grid; gap: 0.6rem; }
+  .ohead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem; align-items: center; }
+  .ohead h3 { font-size: 1.2rem; }
+  .ocard ul { margin: 0; padding-left: 1.1rem; }
+  .ocard select { min-height: 42px; padding: 0.3rem 0.6rem; background: var(--surface-2); border: 1px solid var(--line); border-radius: 2px; }
+  .otot { font-family: var(--display); font-size: 1.3rem; color: var(--gold-hi); }
+  .pay-note { font-size: 0.9rem; color: var(--muted); }
+  .empty { padding: 2rem 0; color: var(--muted); }
+
+  #formDlg { width: min(560px, 96vw); max-height: 94dvh; }
+  #formDlg form { padding: 1.5rem; }
+  #formDlg h2 { font-size: 1.6rem; margin-bottom: 1.2rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.9rem; }
+  .imgs { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 0.6rem; }
+  .imgs .img { width: 96px; }
+  .imgs img { width: 96px; height: 120px; object-fit: cover; border: 1px solid var(--line); }
+  .imgs .img.cover img { border-color: var(--gold); }
+  .imgs .badge { font-size: 0.8rem; color: var(--gold-hi); }
+  .imgs .link { display: block; }
+  .form-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 0.6rem; }
+</style>
+</head>
+<body>
+
+<section id="login" class="login" hidden>
+  <div class="login-box">
+    <h1>Admin login</h1>
+    <p class="muted">Sign in to manage products and orders.</p>
+    <form id="loginForm">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+      <p class="msg" id="loginMsg" role="alert"></p>
+      <button class="btn btn-gold" id="loginBtn" type="submit" style="width:100%">Sign in</button>
+    </form>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="bar">
+    <div class="wrap">
+      <h1>Cocoa Luxury admin</h1>
+      <div><span class="who" id="who"></span><button class="btn btn-sm" id="logout" type="button">Sign out</button></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="products" aria-selected="true">Products</button>
+      <button class="tab" role="tab" data-tab="orders" aria-selected="false">Orders</button>
+    </div>
+
+    <section id="tab-products">
+      <div class="head-row"><h2>Products</h2><button class="btn btn-gold" id="addBtn" type="button">Add product</button></div>
+      <div id="plist"></div>
+    </section>
+
+    <section id="tab-orders" hidden>
+      <div class="head-row"><h2>Orders</h2><button class="btn btn-sm" id="refreshOrders" type="button">Refresh</button></div>
+      <div id="olist"></div>
+    </section>
+  </main>
+</div>
+
+<dialog id="formDlg" aria-label="Product form">
+  <form id="pform">
+    <h2 id="formTitle">Add product</h2>
+    <div class="field"><label for="pName">Product name</label><input id="pName" required maxlength="120"></div>
+    <div class="two">
+      <div class="field"><label for="pCat">Category</label><input id="pCat" list="catList" required maxlength="40" placeholder="T-shirt"><datalist id="catList"></datalist></div>
+      <div class="field"><label for="pPrice">Price</label><input id="pPrice" type="number" min="0" step="1" inputmode="decimal" required></div>
+    </div>
+    <div class="two">
+      <div class="field"><label for="pSizes">Sizes (comma separated)</label><input id="pSizes" placeholder="S, M, L, XL" maxlength="80"></div>
+      <div class="field"><label for="pStock">Stock (empty = unlimited)</label><input id="pStock" type="number" min="0" step="1" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label for="pDesc">Description</label><textarea id="pDesc" maxlength="1200"></textarea></div>
+    <div class="field">
+      <span class="lbl">Photos (the first photo is the cover)</span>
+      <div class="imgs" id="imgList"></div>
+      <input id="fileIn" type="file" accept="image/*" multiple>
+    </div>
+    <label class="check"><input id="pActive" type="checkbox" checked> Show this product in the shop</label>
+    <p class="msg" id="formMsg" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn" type="button" id="cancelForm">Cancel</button>
+      <button class="btn btn-gold" type="submit" id="saveBtn">Save product</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
